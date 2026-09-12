@@ -56,8 +56,8 @@
   --bg-main: #f8fafc;
   --bg-secondary: #e0e2e5; /* footer background */
   --bg-card: rgb(244, 244, 244);
-  --bg-card-hover: rgba(241, 245, 249, 0.95);
-  --bg-elevated: #ffffff;
+  --bg-card-hover: rgba(66, 133, 201, 0.95);
+  --bg-elevated: #7a0c0c;
   --text-primary: #0f172a;
   --text-secondary: #334155;
   --text-muted: #64748b;
