@@ -54,7 +54,7 @@
 /* Light Theme Override */
 [data-theme="light"] {
   --bg-main: #f8fafc;
-  --bg-secondary: #4898e9;
+  --bg-secondary: #e0e2e5; /* footer background */
   --bg-card: rgb(244, 244, 244);
   --bg-card-hover: rgba(241, 245, 249, 0.95);
   --bg-elevated: #ffffff;
