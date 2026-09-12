@@ -243,7 +243,8 @@ body {
   }
   .cli-trigger-btn,
   .accent-picker-wrap,
-  .desktop-resume-btn{
+  .desktop-resume-btn
+  .desktop-getintouch-btn{
     display: none !important;
   }
 }

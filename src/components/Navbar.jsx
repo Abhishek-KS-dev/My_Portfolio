@@ -250,7 +250,7 @@ export default function Navbar({
 
           <a
             href="#contact"
-            className="btn-primary"
+            className="btn-primary desktop-getintouch-btn"
             style={{ padding: '8px 18px', fontSize: '0.88rem' }}
           >
             <Send size={14} />
