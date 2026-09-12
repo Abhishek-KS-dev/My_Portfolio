@@ -71,7 +71,7 @@ export default function MLSandbox() {
 
   return (
     <section id="ml-sandbox" style={{ padding: '90px 0', position: 'relative', zIndex: 1 }}>
-      <div className="container">
+      <div className="container"style={{ maxWidth: '960px', margin: '0 auto' }}>
         {/* Section Header */}
         <div className="section-header">
           <div className="section-tag">
