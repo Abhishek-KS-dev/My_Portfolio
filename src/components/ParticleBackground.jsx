@@ -54,7 +54,7 @@ export default function ParticleBackground({ accentColor = '#00f2fe' }) {
         ctx.beginPath();
         ctx.arc(p1.x, p1.y, p1.radius, 0, Math.PI * 2);
         ctx.fillStyle = accentColor;
-        ctx.globalAlpha = 0.4;
+        ctx.globalAlpha = 0.7;
         ctx.fill();
 
         // Connect with nearby particles
@@ -69,7 +69,7 @@ export default function ParticleBackground({ accentColor = '#00f2fe' }) {
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle = accentColor;
-            ctx.globalAlpha = (1 - dist / 120) * 0.2;
+            ctx.globalAlpha = (1 - dist / 120) * 0.35;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -116,7 +116,7 @@ export default function ParticleBackground({ accentColor = '#00f2fe' }) {
         height: '100%',
         pointerEvents: 'none',
         zIndex: 0,
-        opacity: 0.7,
+        opacity: 0.9,
       }}
     />
   );
