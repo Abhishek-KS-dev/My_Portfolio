@@ -8,7 +8,7 @@
   --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
 
   /* Dark Mode Default Colors */
-  --bg-main: #130707;
+  --bg-main: #060606;
   --bg-secondary: #0d1222;
   --bg-card: rgba(17, 24, 39, 0.65);
   --bg-card-hover: rgba(30, 41, 59, 0.75);
