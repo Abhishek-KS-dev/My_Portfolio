@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
 import { ArrowRight, Sparkles, Terminal, FileText, Mail, Cpu, FolderCode, Briefcase, GraduationCap } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function Hero({ openTerminal, openResume }) {
+  const isMobile = useIsMobile();
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,6 +29,7 @@ export default function Hero({ openTerminal, openResume }) {
         }
       }
     }, updateSpeed);
+    console.log('isMobile:', isMobile);
 
     return () => clearTimeout(timer);
   }, [displayText, isDeleting, roleIndex]);

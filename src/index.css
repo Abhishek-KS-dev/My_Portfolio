@@ -57,7 +57,7 @@
   --bg-secondary: #e0e2e5; /* footer background */
   --bg-card: rgb(244, 244, 244);
   --bg-card-hover: rgba(197, 224, 250, 0.95);
-  --bg-elevated: #f8f7f7;
+  --bg-elevated: #f8f7f7; /* for scrollbars and elevated elements */
   --text-primary: #0f172a;
   --text-secondary: #334155;
   --text-muted: #64748b;
@@ -243,7 +243,7 @@ body {
   }
   .cli-trigger-btn,
   .accent-picker-wrap,
-  .desktop-resume-btn
+  .desktop-resume-btn,
   .desktop-getintouch-btn{
     display: none !important;
   }
