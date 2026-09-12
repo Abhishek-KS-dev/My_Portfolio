@@ -118,6 +118,7 @@ export default function Navbar({
           {/* CLI Terminal Trigger Button */}
           <button
             onClick={openTerminal}
+            classsName="cli-trigger-btn"
             title="Launch Interactive Terminal (CLI)"
             style={{
               display: 'flex',
