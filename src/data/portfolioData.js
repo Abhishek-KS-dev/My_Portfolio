@@ -86,7 +86,7 @@ export const skillsData = [
     items: [
       { name: "Machine Learning", level: 75, icon: "BrainCircuit", experience: "Regression models, classification algorithms, & evaluation" },
       { name: "Data Analysis", level: 80, icon: "BarChart3", experience: "Data preprocessing, EDA, & statistical metrics" },
-      { name: "Generative AI", level: 70, icon: "Sparkles", experience: "AI-assisted development & prompt engineering" },
+      { name: "Generative AI", level: 90, icon: "Sparkles", experience: "AI-assisted development & prompt engineering" },
       { name: "BERT / Hugging Face", level: 65, icon: "Cpu", experience: "Pre-trained NLP transformers & Inference API" }
     ]
   },
