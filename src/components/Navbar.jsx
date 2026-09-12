@@ -93,7 +93,7 @@ export default function Navbar({
         </a>
 
         {/* Desktop Navigation Links */}
-        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px', marginLeft: 'auto', marginRight: 'auto' }}>
           {navLinks.map((link) => (
             <a
               key={link.name}
