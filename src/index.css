@@ -247,4 +247,11 @@ body {
   .desktop-getintouch-btn{
     display: none !important;
   }
+  .cli-trigger-btn{
+    padding: 5px 10px !important;
+    font-size:0.78rem !important;
+  }
+  .right-controls{
+    gap:8px !important;
+  }
 }

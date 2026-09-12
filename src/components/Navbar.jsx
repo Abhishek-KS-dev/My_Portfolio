@@ -114,11 +114,11 @@ export default function Navbar({
         </nav>
 
         {/* Right Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="right-controls" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           {/* CLI Terminal Trigger Button */}
           <button
             onClick={openTerminal}
-            classsName="cli-trigger-btn"
+            //className="cli-trigger-btn"
             title="Launch Interactive Terminal (CLI)"
             style={{
               display: 'flex',
