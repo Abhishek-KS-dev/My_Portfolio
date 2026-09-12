@@ -140,7 +140,7 @@ export default function Navbar({
           </button>
 
           {/* Accent Color Picker */}
-          <div style={{ position: 'relative' }}>
+          <div className="accent-picker-wrap"style={{ position: 'relative' }}>
             <button
               onClick={() => setAccentDropdownOpen(!accentDropdownOpen)}
               title="Customize Accent Color"
@@ -241,7 +241,7 @@ export default function Navbar({
           {/* Resume & Get in Touch Desktop Buttons */}
           <button
             onClick={openResume}
-            className="btn-secondary"
+            className="btn-secondary desktop-resume-btn"
             style={{ padding: '8px 16px', fontSize: '0.88rem' }}
           >
             <Download size={15} />

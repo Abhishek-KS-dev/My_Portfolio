@@ -241,4 +241,9 @@ body {
   .mobile-toggle{
       display: flex !important;
   }
+  .cli-trigger-btn,
+  .accent-picker-wrap,
+  .desktop-resume-btn{
+    display: none !important;
+  }
 }
