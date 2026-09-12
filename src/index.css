@@ -18,7 +18,7 @@
   --text-muted: #64748b;
   --border-color: rgba(255, 255, 255, 0.09);
   --border-highlight: rgba(255, 255, 255, 0.18);
-  --shadow-main: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-main: 0 10px 30px -10px rgba(0, 0, 0, 0.589);
   --glass-backdrop: blur(16px);
 
   /* Typography */
