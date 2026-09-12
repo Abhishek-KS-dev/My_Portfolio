@@ -55,7 +55,7 @@
 [data-theme="light"] {
   --bg-main: #f8fafc;
   --bg-secondary: #cbcccd;
-  --bg-card: rgba(37, 118, 3, 0.85);
+  --bg-card: rgba(195, 197, 194, 0.808);
   --bg-card-hover: rgba(241, 245, 249, 0.95);
   --bg-elevated: #ffffff;
   --text-primary: #0f172a;
