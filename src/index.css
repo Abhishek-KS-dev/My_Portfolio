@@ -232,3 +232,11 @@ body {
   box-shadow: 0 0 10px var(--accent-primary);
   animation: pulseGlow 2s infinite ease-in-out;
 }
+
+@media(max-width: 900px) {
+  .desktop-nav {
+    .mobile-toggle {
+      display: flex !important;
+    }
+  }
+}
