@@ -14,7 +14,7 @@ import ParticleBackground from './components/ParticleBackground';
 
 export default function App() {
   const [theme, setTheme] = useState('dark');
-  const [accent, setAccent] = useState('cyan');
+  const [accent, setAccent] = useState('emerald');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
 
