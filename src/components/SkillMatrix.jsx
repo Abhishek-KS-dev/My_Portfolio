@@ -6,6 +6,8 @@ export default function SkillMatrix() {
   const [activeTab, setActiveTab] = useState('All');
 
   const categories = ['All', ...skillsData.map((c) => c.category)];
+  const tierBarWidth = { Advanced: '100%', Intermediate: '66%', Learning: '33%' };
+  const tierBadgeColor = { Advanced: 'var(--accent-primary)', Intermediate: '#f59e0b', Learning: 'var(--text-secondary)' };
 
   const getSkillIcon = (iconName) => {
     switch (iconName) {
@@ -144,13 +146,13 @@ export default function SkillMatrix() {
                             fontFamily: 'var(--font-mono)',
                             fontSize: '0.85rem',
                             fontWeight: 700,
-                            color: 'var(--accent-primary)',
+                            color: tierBadgeColor[skill.level],
                             background: 'var(--accent-light)',
                             padding: '3px 8px',
                             borderRadius: '12px'
                           }}
                         >
-                          {skill.level}%
+                          {skill.level}
                         </span>
                       </div>
 
@@ -168,7 +170,7 @@ export default function SkillMatrix() {
                         <div
                           style={{
                             height: '100%',
-                            width: `${skill.level}%`,
+                            width: tierBarWidth[skill.level],
                             background: 'var(--accent-gradient)',
                             borderRadius: '10px',
                             transition: 'width 1s ease-in-out'

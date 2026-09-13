@@ -22,7 +22,6 @@ export const personalInfo = {
     { label: "Projects Built", value: "3", icon: "FolderCode" },
     { label: "Internships Completed", value: "2", icon: "Briefcase" },
     { label: "Technical Skills", value: "14+", icon: "Cpu" },
-    { label: "Academic Record", value: "100% SSLC", icon: "GraduationCap" }
   ]
 };
 
@@ -74,28 +73,28 @@ export const skillsData = [
   {
     category: "Programming & Web",
     items: [
-      { name: "Python", level: 80, icon: "FileCode", experience: "Primary language for ML, Data Analytics, & AI models" },
-      { name: "JavaScript (ES6+)", level: 65, icon: "FileCode2", experience: "Web applications, POS logic, & dynamic UIs" },
-      { name: "C Language", level: 50, icon: "Terminal", experience: "Programming logic & computer science fundamentals" },
-      { name: "Java", level: 60, icon: "Coffee", experience: "Object-oriented design & algorithms" },
-      { name: "HTML5 / CSS3", level: 75, icon: "Layout", experience: "Responsive web layouts, styling, & UI design" }
+      { name: "Python", level: "Advanced", icon: "FileCode", experience: "Primary language for ML, Data Analytics, & AI models" },
+      { name: "JavaScript (ES6+)", level: "Intermediate", icon: "FileCode2", experience: "Web applications, POS logic, & dynamic UIs" },
+      { name: "C Language", level: "Intermediate", icon: "Terminal", experience: "Programming logic & computer science fundamentals" },
+      { name: "Java", level: "Intermediate", icon: "Coffee", experience: "Object-oriented design & algorithms" },
+      { name: "HTML5 / CSS3", level: "Advanced", icon: "Layout", experience: "Responsive web layouts, styling, & UI design" }
     ]
   },
   {
     category: "Data Science & AI",
     items: [
-      { name: "Machine Learning", level: 75, icon: "BrainCircuit", experience: "Regression models, classification algorithms, & evaluation" },
-      { name: "Data Analysis", level: 80, icon: "BarChart3", experience: "Data preprocessing, EDA, & statistical metrics" },
-      { name: "Generative AI", level: 90, icon: "Sparkles", experience: "AI-assisted development & prompt engineering" },
-      { name: "BERT / Hugging Face", level: 65, icon: "Cpu", experience: "Pre-trained NLP transformers & Inference API" }
+      { name: "Machine Learning", level: "Intermediate", icon: "BrainCircuit", experience: "Regression models, classification algorithms, & evaluation" },
+      { name: "Data Analysis", level: "Advanced", icon: "BarChart3", experience: "Data preprocessing, EDA, & statistical metrics" },
+      { name: "Generative AI", level: "Advanced", icon: "Sparkles", experience: "AI-assisted development & prompt engineering" },
+      { name: "BERT / Hugging Face", level: "Intermediate", icon: "Cpu", experience: "Pre-trained NLP transformers & Inference API" }
     ]
   },
   {
     category: "Databases & Tools",
     items: [
-      { name: "SQL & PostgreSQL", level: 70, icon: "Database", experience: "Relational database querying, joins, & schema design" },
-      { name: "Git & GitHub", level: 80, icon: "GitBranch", experience: "Version control, repositories, & open-source code" },
-      { name: "Google Colab & Gradio", level: 80, icon: "Workflow", experience: "Interactive notebooks & ML model web deployment" }
+      { name: "SQL & PostgreSQL", level: "Intermediate", icon: "Database", experience: "Relational database querying, joins, & schema design" },
+      { name: "Git & GitHub", level: "Advanced", icon: "GitBranch", experience: "Version control, repositories, & open-source code" },
+      { name: "Google Colab & Gradio", level: "Advanced", icon: "Workflow", experience: "Interactive notebooks & ML model web deployment" }
     ]
   }
 ];
