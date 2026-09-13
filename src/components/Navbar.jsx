@@ -282,8 +282,8 @@ export default function Navbar({
     style={{
       position: 'absolute',
       top: '60px',
-      left: '8px',
-      width: '300px',
+      left: '2px',
+      width: '310px',
       background: 'var(--bg-elevated)',
       border: '1px solid var(--border-color)',
       borderRadius: '12px',
