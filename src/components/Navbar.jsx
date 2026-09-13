@@ -278,16 +278,23 @@ export default function Navbar({
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div
-          style={{
-            background: 'var(--bg-elevated)',
-            borderBottom: '1px solid var(--border-color)',
-            padding: '14px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px'
-          }}
-        >
+  <div
+    style={{
+      position: 'absolute',
+      top: '60px',
+      right: '12px',
+      width: '220px',
+      background: 'var(--bg-elevated)',
+      border: '1px solid var(--border-color)',
+      borderRadius: '12px',
+      boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+      padding: '12px 14px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '6px',
+      zIndex: 200
+    }}
+  >
           {navLinks.map((link) => (
             <a
               key={link.name}
