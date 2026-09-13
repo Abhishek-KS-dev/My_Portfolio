@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { sampleNewsPresets } from '../data/portfolioData';
 import { Sparkles, Bot, Newspaper, Activity, Calculator, CheckCircle2, AlertTriangle, Play, RefreshCw, BarChart2 } from 'lucide-react';
+import { Client } from '@gradio/client';
+import { pipeline } from '@huggingface/transformers';
 // ─────────────────────────────────────────────────────────────
 // REAL TRAINED MODEL — Medical Insurance Cost Linear Regression
 // Feature order: ['age', 'sex', 'bmi', 'children', 'smoker', 'region']
@@ -16,7 +18,27 @@ const INSURANCE_MODEL = {
     region: 271.284266
   }
 };
+// ── In-browser fallback model (free, no quota) ──
+let nlpPipelinePromise = null;
+const getNlpPipeline = () => {
+  if (!nlpPipelinePromise) {
+    nlpPipelinePromise = pipeline('zero-shot-classification', 'Xenova/mobilebert-uncased-mnli');
+  }
+  return nlpPipelinePromise;
+};
 
+const ZERO_SHOT_LABELS = ['true news', 'fake news'];
+
+const buildResultFromScores = (text, realScore, fakeScore) => {
+  const isReal = realScore >= fakeScore;
+  return {
+    text,
+    expectedLabel: isReal ? 'Authentic / Reliable News' : 'Potential Fake / Clickbait',
+    fakeScore,
+    realScore,
+    sentiment: isReal ? 'Objective / High Credibility' : 'Sensationalist / Low Credibility'
+  };
+};
 // Category encodings used in your training notebook
 const SEX_MAP = { male: 0, female: 1 };
 const SMOKER_MAP = { no: 0, yes: 1 };
@@ -27,7 +49,7 @@ export default function MLSandbox() {
   // Model 1: NLP News Classifier State
   const [newsText, setNewsText] = useState(sampleNewsPresets[0].text);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [nlpResult, setNlpResult] = useState(sampleNewsPresets[0]);
+  const [nlpResult, setNlpResult] = useState(null);
 
   // Model 2: Medical Insurance Regression State
   const [age, setAge] = useState(24);
@@ -63,38 +85,73 @@ export default function MLSandbox() {
   const breakdown = getInsuranceBreakdown();
   const estimatedCost = breakdown.total;
 
-  // Run NLP Classification Simulation
-  const runNlpClassifier = (textToAnalyze) => {
+// Hybrid inference: Hugging Face Space first (accurate), in-browser model as fallback
+  const runNlpClassifier = async (textToAnalyze) => {
+    if (!textToAnalyze.trim()) return;
     setIsAnalyzing(true);
-    setTimeout(() => {
-      const lower = textToAnalyze.toLowerCase();
-      let fakePoints = 0;
-      let realPoints = 0;
+    try {
+      // Attempt 1: live Hugging Face Space (RoBERTa, FEVER-trained)
+      const client = await Client.connect('abhishek-ks-dev/fake-news-detector');
+      const result = await client.predict('/fake_news_detector', { text: textToAnalyze });
+      const raw = result.data[0];
+      const labelMatch = raw.match(/Prediction:\s*(.+)/);
+      const confMatch = raw.match(/Confidence:\s*([\d.]+)\s*%/);
+      const label = labelMatch ? labelMatch[1].trim() : 'UNKNOWN';
+      const confidence = confMatch ? parseFloat(confMatch[1]) : 50;
 
-      // Clickbait/fake keywords
-      const fakeKeywords = ['shocking', 'secret', 'miracle', 'cure', 'overnight', 'doctors don\'t want', 'trick', 'unbelievable', 'free money'];
-      const realKeywords = ['university', 'study', 'research', 'published', 'official', 'announced', 'schedule', 'laboratory', 'test', 'percent'];
-
-      fakeKeywords.forEach((kw) => {
-        if (lower.includes(kw)) fakePoints += 25;
-      });
-
-      realKeywords.forEach((kw) => {
-        if (lower.includes(kw)) realPoints += 20;
-      });
-
-      let fakeScore = Math.min(Math.max(fakePoints > 0 ? 55 + fakePoints : 15 + Math.random() * 15, 3), 98);
-      let realScore = 100 - fakeScore;
-
-      setNlpResult({
-        text: textToAnalyze,
-        expectedLabel: fakeScore > 50 ? 'Potential Fake / Clickbait' : 'Authentic / Reliable News',
-        fakeScore: parseFloat(fakeScore.toFixed(1)),
-        realScore: parseFloat(realScore.toFixed(1)),
-        sentiment: fakeScore > 50 ? 'Sensationalist / Low Credibility' : 'Objective / High Credibility'
-      });
+      let realScore, fakeScore, verdict, sentiment;
+      if (label.includes('REAL')) {
+        realScore = confidence;
+        fakeScore = +(100 - confidence).toFixed(1);
+        verdict = 'Authentic / Factually Supported';
+        sentiment = 'Objective / High Credibility';
+      } else if (label.includes('FAKE')) {
+        fakeScore = confidence;
+        realScore = +(100 - confidence).toFixed(1);
+        verdict = 'Potential Fake / Refuted Claim';
+        sentiment = 'Sensationalist / Low Credibility';
+      } else {
+        realScore = 50;
+        fakeScore = 50;
+        verdict = label;
+        sentiment = 'Inconclusive / Needs Verification';
+      }
+      setNlpResult({ text: textToAnalyze, expectedLabel: verdict, fakeScore, realScore, sentiment });
+    } catch (err) {
+      if (err.message && err.message.includes('ZeroGPU')) {
+        // Attempt 2: daily quota exhausted → lightweight model runs in the browser
+        try {
+          const classifier = await getNlpPipeline();
+          const out = await classifier(textToAnalyze, ZERO_SHOT_LABELS);
+          let realScore = 50, fakeScore = 50;
+          out.labels.forEach((lbl, i) => {
+            if (lbl === 'fake news') fakeScore = +(out.scores[i] * 100).toFixed(1);
+            if (lbl === 'true news') realScore = +(out.scores[i] * 100).toFixed(1);
+          });
+          setNlpResult(buildResultFromScores(textToAnalyze, realScore, fakeScore));
+        } catch (fallbackErr) {
+          console.error('Fallback model failed:', fallbackErr);
+          setNlpResult({
+            text: textToAnalyze,
+            expectedLabel: 'Model failed to load — check your connection and try again.',
+            fakeScore: 0,
+            realScore: 0,
+            sentiment: 'Error'
+          });
+        }
+      } else {
+        console.error('Model call failed:', err);
+        setNlpResult({
+          text: textToAnalyze,
+          expectedLabel: 'Model unavailable — the Space may be waking up. Wait ~30s and try again.',
+          fakeScore: 0,
+          realScore: 0,
+          sentiment: 'Connection Error'
+        });
+      }
+    } finally {
       setIsAnalyzing(false);
-    }, 600);
+    }
   };
 
   return (
@@ -110,7 +167,7 @@ export default function MLSandbox() {
             Test <span className="gradient-text">Live Machine Learning</span> Models
           </h2>
           <p className="section-subtitle">
-            Interact with simulated machine learning inference models built during projects. Adjust inputs and inspect real-time outputs!
+            Interact with live machine learning models built during my projects. Test a BERT-based NLP classifier for fake news detection, or explore a regression model predicting medical insurance costs based on health metrics.
           </p>
         </div>
 
@@ -178,7 +235,7 @@ export default function MLSandbox() {
                   <span>BERT NLP News Classification Sandbox</span>
                 </h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginTop: '4px' }}>
-                  Simulating BERT transformer tokenization & confidence scoring via Hugging Face Inference API.
+                 Hybrid inference — powered by my Hugging Face Space (RoBERTa), with an in-browser AI fallback when the daily GPU quota runs out.
                 </p>
               </div>
 
@@ -194,7 +251,7 @@ export default function MLSandbox() {
                   fontFamily: 'var(--font-mono)'
                 }}
               >
-                Model Accuracy: 94.2%
+                ⚡ Hybrid AI: HF Space + In-Browser Model
               </span>
             </div>
 
@@ -263,7 +320,7 @@ export default function MLSandbox() {
               {isAnalyzing ? (
                 <>
                   <RefreshCw size={18} className="spin" style={{ animation: 'spin 1s linear infinite' }} />
-                  <span>Analyzing Tokens & Running BERT Classifier...</span>
+                  <span>Analyzing... (first call may take ~30 - 60s while the Space wakes up)</span>
                 </>
               ) : (
                 <>
