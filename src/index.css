@@ -254,4 +254,16 @@ body {
   .right-controls{
     gap:8px !important;
   }
+  .container{
+    padding:0 12px !important;
+    gap: 6px !important;
+  }
+  .container a[href="#home"]{
+    font-size: 1rem !important;
+    gap: 6px !important;
+  }
+  .container a[href="#home"] span:first-of-type{
+    width: 30px !important;
+    height: 30px !important;
+  }
 }
