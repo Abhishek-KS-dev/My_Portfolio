@@ -1,4 +1,9 @@
+*, *::before,
+ *::after {
+   box-sizing: border-box;
+ }
 /* Root Design System & Theme CSS Variables */
+
 :root {
   /* Default Cyan Theme */
   --accent-primary: #00f2fe;
@@ -213,6 +218,7 @@ body {
 
 /* Responsive Container */
 .container {
+  box-sizing: border-box;
   width: 100%;
   max-width: 1500px;
   margin: 0 auto;
