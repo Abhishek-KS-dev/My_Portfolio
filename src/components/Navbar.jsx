@@ -282,10 +282,10 @@ export default function Navbar({
           style={{
             background: 'var(--bg-elevated)',
             borderBottom: '1px solid var(--border-color)',
-            padding: '20px',
+            padding: '14px 16px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px'
+            gap: '8px'
           }}
         >
           {navLinks.map((link) => (
@@ -297,8 +297,8 @@ export default function Navbar({
                 color: 'var(--text-primary)',
                 textDecoration: 'none',
                 fontWeight: 600,
-                fontSize: '1rem',
-                padding: '8px 0'
+                fontSize: '0.88rem',
+                padding: '5px 0'
               }}
             >
               {link.name}
