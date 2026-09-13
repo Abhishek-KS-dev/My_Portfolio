@@ -283,7 +283,7 @@ export default function Navbar({
       position: 'absolute',
       top: '60px',
       right: '12px',
-      width: '220px',
+      width: '190px',
       background: 'var(--bg-elevated)',
       border: '1px solid var(--border-color)',
       borderRadius: '12px',
