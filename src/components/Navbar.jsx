@@ -268,7 +268,7 @@ export default function Navbar({
               border: 'none',
               color: 'var(--text-primary)',
               cursor: 'pointer',
-              padding: '8px'
+              padding: '16px'
             }}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
