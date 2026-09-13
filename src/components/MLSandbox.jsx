@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
 import { sampleNewsPresets } from '../data/portfolioData';
 import { Sparkles, Bot, Newspaper, Activity, Calculator, CheckCircle2, AlertTriangle, Play, RefreshCw, BarChart2 } from 'lucide-react';
+// ─────────────────────────────────────────────────────────────
+// REAL TRAINED MODEL — Medical Insurance Cost Linear Regression
+// Feature order: ['age', 'sex', 'bmi', 'children', 'smoker', 'region']
+// ─────────────────────────────────────────────────────────────
+const INSURANCE_MODEL = {
+  intercept: -12779.250821992382,
+  coefficients: {
+    age: 257.056264,
+    sex: 18.7914567,
+    bmi: 335.781491,
+    children: 425.091456,
+    smoker: 23647.8181,
+    region: 271.284266
+  }
+};
 
+// Category encodings used in your training notebook
+const SEX_MAP = { male: 0, female: 1 };
+const SMOKER_MAP = { no: 0, yes: 1 };
+const REGION_MAP = { Southwest: 0, Southeast: 1, Northwest: 2, Northeast: 3 };
 export default function MLSandbox() {
   const [activeTab, setActiveTab] = useState('nlp'); // 'nlp' or 'regression'
 
@@ -16,24 +35,33 @@ export default function MLSandbox() {
   const [isSmoker, setIsSmoker] = useState(false);
   const [dependents, setDependents] = useState(0);
   const [region, setRegion] = useState('Southwest');
+  const [sex, setSex] = useState('male');
 
-  // Calculate Regression Prediction
-  const calculateInsuranceCost = () => {
-    let base = 2500;
-    base += age * 260;
-    base += (bmi - 20) * 310;
-    base += dependents * 480;
-    if (isSmoker) {
-      base += 18500;
-      if (bmi > 30) {
-        base += (bmi - 30) * 520;
-      }
-    }
-    if (region === 'Southeast') base += 800;
-    return Math.max(Math.round(base), 1500);
+// Real regression prediction using your actual trained coefficients
+  const getInsuranceBreakdown = () => {
+    const c = INSURANCE_MODEL.coefficients;
+    const parts = {
+      intercept: INSURANCE_MODEL.intercept,
+      agePart: c.age * age,
+      sexPart: c.sex * SEX_MAP[sex],
+      bmiPart: c.bmi * bmi,
+      dependentsPart: c.children * dependents,
+      smokerPart: c.smoker * SMOKER_MAP[isSmoker ? 'yes' : 'no'],
+      regionPart: c.region * REGION_MAP[region]
+    };
+    const total =
+      parts.intercept +
+      parts.agePart +
+      parts.sexPart +
+      parts.bmiPart +
+      parts.dependentsPart +
+      parts.smokerPart +
+      parts.regionPart;
+    return { ...parts, total: Math.max(Math.round(total), 0) };
   };
 
-  const estimatedCost = calculateInsuranceCost();
+  const breakdown = getInsuranceBreakdown();
+  const estimatedCost = breakdown.total;
 
   // Run NLP Classification Simulation
   const runNlpClassifier = (textToAnalyze) => {
@@ -347,6 +375,26 @@ export default function MLSandbox() {
                     style={{ width: '100%', accentColor: 'var(--accent-primary)' }}
                   />
                 </div>
+                {/* Sex Select */}
+                <div>
+                  <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.92rem', fontWeight: 700 }}>Sex:</label>
+                  <select
+                    value={sex}
+                    onChange={(e) => setSex(e.target.value)}
+                    style={{
+                      width: '100%',
+                      background: 'var(--bg-elevated)',
+                      border: '1px solid var(--border-color)',
+                      borderRadius: '8px',
+                      padding: '10px',
+                      color: 'var(--text-primary)',
+                      fontWeight: 600
+                    }}
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
 
                 {/* BMI Slider */}
                 <div>
@@ -457,18 +505,36 @@ export default function MLSandbox() {
 
                     <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.88rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <li style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Base Rate & Age ({age} yrs):</span>
-                        <strong style={{ color: 'var(--text-primary)' }}>+${(2500 + age * 260).toLocaleString()}</strong>
+                        <span>Base Intercept:</span>
+                        <strong style={{ color: 'var(--text-primary)' }}>${Math.round(breakdown.intercept).toLocaleString()}</strong>
                       </li>
                       <li style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>BMI Factor ({bmi}):</span>
-                        <strong style={{ color: 'var(--text-primary)' }}>+${Math.round((bmi - 20) * 310).toLocaleString()}</strong>
+                        <span>Age ({age} yrs × $257.06):</span>
+                        <strong style={{ color: 'var(--text-primary)' }}>+${Math.round(breakdown.agePart).toLocaleString()}</strong>
+                      </li>
+                      <li style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Sex ({sex === 'male' ? 'male = 0' : 'female = 1'}):</span>
+                        <strong style={{ color: 'var(--text-primary)' }}>
+                          {breakdown.sexPart > 0 ? `+$${Math.round(breakdown.sexPart).toLocaleString()}` : '$0'}
+                        </strong>
+                      </li>
+                      <li style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>BMI Factor ({bmi} × $335.78):</span>
+                        <strong style={{ color: 'var(--text-primary)' }}>+${Math.round(breakdown.bmiPart).toLocaleString()}</strong>
+                      </li>
+                      <li style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Dependents ({dependents} × $425.09):</span>
+                        <strong style={{ color: 'var(--text-primary)' }}>+${Math.round(breakdown.dependentsPart).toLocaleString()}</strong>
                       </li>
                       <li style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span>Smoker Surcharge:</span>
                         <strong style={{ color: isSmoker ? '#ef4444' : 'var(--text-muted)' }}>
-                          {isSmoker ? '+$18,500' : '$0 (Non-Smoker)'}
+                          {isSmoker ? `+$${Math.round(breakdown.smokerPart).toLocaleString()}` : '$0 (Non-Smoker)'}
                         </strong>
+                      </li>
+                      <li style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Region ({region} = {REGION_MAP[region]}):</span>
+                        <strong style={{ color: 'var(--text-primary)' }}>+${Math.round(breakdown.regionPart).toLocaleString()}</strong>
                       </li>
                     </ul>
                   </div>
@@ -485,7 +551,7 @@ export default function MLSandbox() {
                     marginTop: '20px'
                   }}
                 >
-                  💡 <strong>ML Insights:</strong> Exploratory analysis revealed that smoking status combined with BMI &gt; 30 produces a non-linear exponential increase in predicted charges.
+                  💡 <strong>ML Insights:</strong> Predictions come from the actual trained linear regression model (R² = 0.78). Smoking status is the dominant factor, adding ~$23,648/yr — more than age, BMI, and dependents combined.
                 </div>
               </div>
             </div>
