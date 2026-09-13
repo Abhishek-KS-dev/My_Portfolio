@@ -272,4 +272,7 @@ body {
     width: 30px !important;
     height: 30px !important;
   }
+  .copy-email-btn{
+    display: none !important;
+  }
 }

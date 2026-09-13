@@ -121,7 +121,7 @@ const handleSubmit = (e) => {
               </div>
 
               <button
-                onClick={handleCopyEmail}
+                onClick={handleCopyEmail} className="copy-email-btn"
                 title="Copy email to clipboard"
                 style={{
                   background: 'var(--bg-elevated)',
