@@ -121,7 +121,7 @@ export const projectsData = [
   },
   {
     id: "fake-news-detector",
-    title: "Fake News Detection System",
+    title: "AI News Style Classifier",
     category: "Machine Learning & AI",
     tagline: "NLP-Powered Text Classifier via Pre-trained BERT Model",
     description: "Developed an NLP-based fake news classifier leveraging a pre-trained BERT model via the Hugging Face Inference API. Built an interactive Gradio web interface for real-time text analysis, outputting Fake/Real predictions with confidence scores and robust error handling.",
@@ -132,8 +132,8 @@ export const projectsData = [
       "Confidence score output and robust error handling for user inputs"
     ],
     tech: ["Python", "BERT", "Hugging Face API", "Gradio", "NLP"],
-    github: "https://github.com/Abhishek-KS-dev/Ai-Fake-news-detector",
-    demo: "#ml-sandbox",
+    github: "https://github.com/Abhishek-KS-dev/AI-news-style-classifier",
+    demo: "https://abhishek-ks-dev-fake-news-detector.hf.space",
     featured: true,
     metrics: { accuracy: "94.2%", framework: "Hugging Face BERT", interface: "Gradio Web UI" }
   },
